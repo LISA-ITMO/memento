@@ -8,3 +8,5 @@ Memento - мобильная и веб-платформа, помогающая 
 - backend-систему, написанную на языке golang
 - мобильное приложение для ОС Android, написанное при помощи языков Kotlin и Java
 
+## Дизайн-система 
+Дизайн веб и мобильной платформы выполнен в Figma. Ознакомиться с ним можно по [ссылке](https://www.figma.com/design/1g3dpx5jVcydxGjsJO8dfo/memento?node-id=1103-2056&t=mZEEiJexvk2lsNRg-1)
