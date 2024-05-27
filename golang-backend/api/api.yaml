@@ -1,0 +1,340 @@
+paths:
+  /main:
+    get
+  /folder/{id}:
+    get 
+    post
+    patch 
+    delete
+
+api:
+  /main:
+    get:
+      summary: Получение главной папки пользователя
+      parameters:
+        - in: header
+          name: token
+          descr: Токен пользователя
+          schema:
+            type: string
+            example: user_token
+      responses:
+        '200':
+          description: Главная папка пользователя
+          content:
+            application/json:
+              schema:
+                description: JSON-отображение папки
+                type: object
+                additionalProperties: true
+                example: '{"id":, folders:[folder:{name:"", id:}], notes:[note:{name:"", id:}]}'
+
+  /folder/{id}:
+    get:
+      summary: Получение папки пользователя по id
+      parameters:
+        - in: header
+          name: token
+          descr: Токен пользователя
+          schema:
+            type: string
+            example: user_token
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: Идентификатор папки
+      responses:
+        '200':
+          description: Папка пользователя
+          content:
+            application/json:
+              schema:
+                description: JSON-отображение папки
+                type: object
+                additionalProperties: true
+                example: '{"id":, folders:[folder:{name:"", id:}], notes:[note:{name:"", id:}]}'
+      post:
+        summary: Создание объекта внутри данной папки по id
+        parameters:
+          - in: header
+            name: token
+            descr: Токен пользователя
+            schema:
+              type: string
+              example: user_token
+          - in: header
+            name: object_type
+            descr: Тип создаваемого объекта
+            schema:
+              type: string
+              possible values: "folder", "note"
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: Идентификатор папки
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                descr: JSON-отображение создаваемого объекта
+                example:
+                  {
+                    "name": string
+                  }
+      patch:
+        summary: Переименование папки по id
+        parameters:
+          - in: header
+            name: token
+            descr: Токен пользователя
+            schema:
+              type: string
+              example: user_token
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: Идентификатор папки
+          - in: query
+            name: name
+            required: true
+            schema:
+              type: string
+              descr: Новое имя для папки
+      delete:
+        summary: Удаление папки по id
+        parameters:
+          - in: header
+            name: token
+            descr: Токен пользователя
+            schema:
+              type: string
+              example: user_token
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: Идентификатор папки
+
+  /note/{id}:
+    get:
+      summary: Получение конспекта по id. Вопросы отдаются вместе с содержимым.
+      parameters:
+        - in: header
+          name: token
+          descr: Токен пользователя
+          schema:
+            type: string
+            example: user_token
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: Идентификатор конспекта
+      patch:
+        summary: Переименоание конспекта по id
+        parameters:
+          - in: header
+            name: token
+            descr: Токен пользователя
+            schema:
+              type: string
+              example: user_token
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: Идентификатор конспекта
+          - in: query
+            name: name
+            required: true
+            schema:
+              type: string
+              description: новое имя конспекта
+      post:
+        summary: Создание вопроса внутри конспекта
+        parameters:
+          - in: header
+            name: token
+            descr: Токен пользователя
+            schema:
+              type: string
+              example: user_token
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: Идентификатор конспекта
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  descr: JSON-отображение создаваемого вопроса
+                  example:
+                    {
+                      "title" string,
+                      "text" string,
+                      "answer" string
+                    }
+      delete:
+        summary: Удаление конспекта
+        parameters:
+          - in: header
+            name: token
+            descr: Токен пользователя
+            schema:
+              type: string
+              example: user_token
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: Идентификатор конспекта
+  /question/{id}:
+    patch:
+      summary: обновление информации о вопросе
+      parameters:
+        - in: header
+          name: token
+          descr: Токен пользователя
+          schema:
+            type: string
+            example: user_token
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: Идентификатор вопроса
+      requestBody:
+        description: JSON-отображение обновляемого вопроса
+    delete:
+      summary: Удаление вопроса
+      parameters:
+        - in: header
+          name: token
+          descr: Токен пользователя
+          schema:
+            type: string
+            example: user_token
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: Идентификатор вопроса
+  /network:
+    /network/public:
+      post:
+        summary: Публикация конспекта
+        parameters:
+          - in: header
+            name: token
+            required: true
+            schema:
+              type: string
+              description: токен пользователя
+          - in: query
+            name: id
+            required: true
+            schema:
+              type: string
+              description: id конспекта
+        requestBody:
+          description: JSON-отображение публикуемого конспекта
+  /network/notes:
+      get:
+        summary: получение публичного конспекта по тэгу
+        parameters:
+          - in: header
+            name: token
+            required: true
+            schema:
+              type: string
+              description: токен пользователя
+          - in: query
+            name: tag
+            schema:
+              type: string
+              description: название тэга
+      delete:
+        summary: удаление публичного конспекта по id
+        parameters:
+          - in: header
+            name: token
+            required: true
+            schema:
+              type: string
+              description: токен пользователя
+          - in: query
+            name: id
+            schema:
+              type: integer
+              description: id публичного конспекта
+  /network/notes/favourites:
+      get:
+        summary: Получение избранных конспектов пользователя
+        parameters:
+          - in: header
+            name: token
+            required: true
+            schema:
+              type: string
+              description: токен пользователя
+      post:
+        summary: Добавление поста в избранное для пользователя
+        parameters:
+          - in: header
+            name: token
+            required: true
+            schema:
+              type: string
+              description: токен пользователя
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: id добавляемого конспекта
+      delete:
+        summary: Удаление конспекта из избранного
+        parameters:
+          - in: header
+            name: token
+            required: true
+            schema:
+              type: string
+              description: токен пользователя
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: integer
+              description: id удаляемого конспекта
+  /network/groups:
+    post:
+      summary: Создание группы
+  /network/groups/join:
+    post:
+      summary: Вступление в открытую группу по id а в закрытую по ссылке
+  /network/groups/notes:
+    summary: управление конспектами в группе.
+  /network/groups/tags:
+    summary: управление тэгами группы.
+
+
+    

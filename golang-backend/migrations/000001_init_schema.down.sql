@@ -1,0 +1,12 @@
+DROP EXTENSION IF EXISTS pgcrypto;
+
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS folders;
+DROP TABLE IF EXISTS users_to_main_folders;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS public_notes;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS tags_notes;
+DROP TABLE IF EXISTS "groups";
+DROP TABLE IF EXISTS groups_tags;
+DROP TABLE IF EXISTS groups_notes;
